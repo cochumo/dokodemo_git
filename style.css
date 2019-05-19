@@ -61,6 +61,12 @@
   top: calc(100vh / 2.5);
 }
 
+@font-face {
+  font-family: 'SFMono-Regular';
+  src: url('font/SFMono-Regular.otf') format('truetype');
+}
+
+
 html {
   background-color: #F0F3F5;
 }
@@ -68,7 +74,8 @@ html {
 body.join,
 body.index,
 body.select,
-body.mypage {
+body.mypage,
+body.post_detail {
   background-color: #A8E1FF;
   width: 100vw;
   min-height: 100vh;
@@ -317,6 +324,10 @@ p {
   padding: 3% 5%;
 }
 
+.content_footer .modal_bt {
+  padding: 0 .5em;
+}
+
 .content_footer button {
   width: 35px;
   height: 35px;
@@ -378,6 +389,10 @@ p {
 
 .index_main .pages a {
   background-color: #007bff;
+}
+
+.index_main .modal-footer {
+  border-top: none;
 }
 
 /* 推移ページ */
@@ -491,10 +506,6 @@ p {
   height: 50vh;
   width: 100%;
   /* margin:10%!important; */
-}
-
-.mapview .modal-dialog {
-  padding-top: 30%;
 }
 
 /* mypage */
@@ -614,4 +625,160 @@ p {
 
 #deletedPost .deletedContent p {
   margin-bottom: .25em;
+}
+
+/* post detail */
+
+.post_detail .container .row {
+  padding: 1em 0;
+}
+
+.post_detail #pano,
+.post_detail #map {
+  height: 45vh;
+  width: 100%;
+}
+
+.post_detail #res {
+  padding: 0 1em;
+  font-size: 12px;
+  height: 15%;
+  font-family: SFMono-Regular;
+}
+
+.post_detail .map_area {
+  width: 50%;
+}
+
+.post_detail .detail_area {
+  background-color: #06080e;
+  font-family: "M PLUS Rounded 1c";
+  color: #8dcbd3;
+  width: 50%;
+  height: 90vh;
+}
+
+.detail_area .user_info {
+  height: 5%;
+}
+
+.detail_area .user_info p.info_name {
+  padding-left: .25em;
+}
+
+.post_detail .contributor {
+  text-align: center;
+  padding: 0 5em;
+  width: 100%;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  height: 7%;
+}
+
+.post_detail .comments_area {
+  height: 63%;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+.post_detail .comments_area .spectator {
+  margin-top: .5em;
+  padding: 0 2em;
+}
+
+.post_detail .comments_area .comment {
+  padding: .5em 0;
+}
+
+.post_detail .comments_area .comment .spe_name {
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.post_detail .comments_area .comment .spe_message {
+  font-size: 16px;
+}
+
+.post_detail .comments_area .comment .spe_date {
+  font-size: 12px;
+}
+
+.post_detail .enter_comment {
+  height: 10%;
+  background-color: #1F2225;
+  font-size: 16px;
+}
+
+.post_detail .enter_comment form {
+  width: 100%;
+}
+
+.post_detail .enter_comment input[type="text"] {
+  width: 75%;
+  padding: .5em 0;
+  border: none;
+  background-color: initial;
+  color: #999;
+  padding-left: 1em;
+}
+
+.post_detail .enter_comment input[type="text"]::placeholder {
+  color: #999;
+}
+
+.post_detail .enter_comment input[type="text"]:focus {
+  outline: none;
+}
+
+.post_detail .enter_comment input[type="submit"] {
+  width: 25%;
+  border: none;
+  color: #999;
+  background-color: initial;
+  padding: .5em 0;
+}
+
+@media screen and (max-width: 767px) {
+
+  .mapview #pano {
+    height: calc(70vh - 56px);
+  }
+
+  .post_detail_wrap {
+    flex-direction: column;
+  }
+
+  .post_detail_wrap .map_area,
+  .post_detail_wrap .detail_area {
+    width: 100%;
+  }
+
+  .post_detail_wrap .detail_area {
+    height: initial;
+  }
+  .post_detail_wrap .detail_area #res {
+    height: initial;
+    padding-top: 1em;
+    padding-bottom: 1em;
+  }
+  .post_detail_wrap .detail_area .user_info {
+    height: initial;
+    margin-top: .5em;
+    margin-bottom: 1em;
+  }
+  .post_detail .contributor {
+    height: initial;
+    padding: 0 2em;
+  }
+  .post_detail_wrap .detail_area .comments_area {
+    min-height: 100px;
+    max-height: 275px;
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+  .post_detail_wrap .detail_area .enter_comment {
+    height: initial;
+    padding-top: 1em;
+    padding-bottom: 1em;
+  }
 }

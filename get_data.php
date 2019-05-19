@@ -7,15 +7,9 @@
   ini_set("display_errors", 1);
   error_reporting(E_ALL);
 
-  // var_dump($_POST);
-
-  // もっと見るボタンの準備
+  // もっと見るボタン
   $offset = (int)$_POST['offset'];
   $limit = 5;
-
-  // var_dump($offset);
-  // var_dump($limit);
-  // exit;
 
   // 論理削除した投稿以外を取得
   $posts = $db->prepare('SELECT u.name, p.* FROM users u, posts p WHERE u.id=p.user_id AND p.is_deleted = 0 ORDER BY p.created_at DESC LIMIT ? OFFSET ?');
@@ -70,7 +64,7 @@
 
 </head>
 
-<body class="index">
+<body class="index" onload="initialize()">
     <!--投稿の繰り返し表示 ここから-->
     <?php foreach ($post_ as $post): ?>
     <div class="index_content" id="<?php echo $post['id']; ?>">
@@ -211,8 +205,6 @@
 
    }
 
-  </script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWCuLqhEGIXn3k-oCmaw-bJrcKA08vCIU&callback=initialize">
   </script>
 
 </body>
