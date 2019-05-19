@@ -187,8 +187,6 @@
 
 <body class="select">
 
-
-
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container">
@@ -217,7 +215,7 @@
     </div>
   </nav>
 
-  <section class="mapview container">
+  <section class="container">
     <div class="flexbox vh-100 row">
       <div class="nav_margin"></div>
       <div class="mapview col-lg-12 col-md-12 col-sm-12">
@@ -255,14 +253,6 @@
             </div>
           </div>
         </div>
-        <!-- <form action="" method="post">
-          <input type="hidden" id="lat" value="">
-          <input type="hidden" id="lng" value="">
-          <input type="hidden" id="head" value="">
-          <input type="hidden" id="pitch" value="">
-          <input type="hidden" id="zoom" value="">
-          <input type="submit" value="送信" class="control">
-        </form> -->
         <div id="map"></div>
         <div id="res" class="flexbox"></div>
       </div>
@@ -278,11 +268,57 @@
 console.log(posted_lat);
 console.log(posted_lng);
 
+    var fenway = {
+      lat: Number(posted_lat),
+      lng: Number(posted_lng)
+    };
+
+    // function initialize() {
+    //   // Use the Street View service to find a pano ID on Pirrama Rd, outside the
+    //   // Google office.
+    //   var streetviewService = new google.maps.StreetViewService;
+    //   streetviewService.getPanorama(
+    //       {location: {lat: -33.867386, lng: 151.195767}},
+    //       function(result, status) {
+    //         if (status === 'OK') {
+    //           outsideGoogle = result;
+    //           initPanorama();
+    //         }
+    //       });
+    // }
+
     function initialize() {
       var fenway = {
         lat: Number(posted_lat),
         lng: Number(posted_lng)
       };
+
+      // 取得してきた緯度経度にストリートビューがあるか検査
+      var streetviewService = new google.maps.StreetViewService;
+      streetviewService.getPanorama(
+        {location: {lat: Number(posted_lat), lng: Number(posted_lng)}},
+        function(result, status) {
+
+          // リロード処理
+          var reload = function(){
+            location.reload();
+          };
+
+          if (status === 'OK') {
+            // ある場合
+            console.log(result);
+            console.log(status);
+            // 単体テスト
+            setTimeout(reload, 10000);
+          } else {
+            // ない場合(UNKNOWN_ERROR or ZERO_RESULTS)
+            console.log('else入ったよ');
+            console.log(result);
+            console.log(status);
+            setTimeout(reload, 0);
+          }
+      });
+
       var map = new google.maps.Map(document.getElementById('map'), {
         center: fenway,
         zoom: 14
@@ -293,7 +329,8 @@ console.log(posted_lng);
           pov: {
             heading: 34,
             pitch: 10
-          }
+          },
+          motionTracking: false
         });
       map.setStreetView(panorama);
 
