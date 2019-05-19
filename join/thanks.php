@@ -56,7 +56,7 @@
           <h3>ユーザー登録が完了しました</h3>
         </div>
         <div class="login_move">
-          <a href="#">ログイン</a>
+          <a href="join_index.php">ログイン</a>
         </div>
       </form>
     </div>

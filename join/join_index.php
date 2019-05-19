@@ -6,9 +6,9 @@
 
 	//フォームが送信されてこのページが表示されたか確認
 	if (!empty($_POST)) {
-	    
 
-	// エラー項目の確認
+
+		// エラー項目の確認
 		if ($_POST['name'] == '') {
 			$error['name'] = 'blank';
 		}
@@ -21,16 +21,27 @@
 		if ($_POST['password'] == '') {
 			$error['password'] ='blank';
 		}
-		
-		
+
+
 		if (empty($error)){
-	        $member = $db->prepare('SELECT COUNT(*) AS cnt FROM users WHERE email=?');
-	        $member->execute(array($_POST['email']));
-	        $record = $member->fetch();
-	        if ($record['cnt'] > 0){
-	        $error['email'] = 'duplicate';
-	        }
-	    }
+        $member = $db->prepare('SELECT * FROM users WHERE email=? OR name=?');
+        $member->execute(array(
+					$_POST['email'],
+					$_POST['name']
+				));
+        $record = $member->fetch();
+        // if ($record['cnt'] > 0){
+        // 	$error['email'] = 'duplicate';
+      	// }
+
+				if ($_POST['email'] === $record['email']) {
+					$error['email'] = 'duplicate';
+				}
+
+				if ($_POST['name'] === $record['name']) {
+					$error['name'] = 'duplicate';
+				}
+	   }
 
 		// もしエラーが起きなかったら
 		if (empty($error)) {
@@ -40,13 +51,13 @@
 			exit();
 		}
 	}
-	
+
 	// 書き直し
     if (isset($_REQUEST['action']) == 'rewrite'){
     $_POST = $_SESSION['join'];
     $error['rewrite'] = true;
     }
-	
+
 ?>
 <!doctype html>
 <html lang="ja">
@@ -66,6 +77,7 @@
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css">
   <!--style.cssを読み込み-->
   <link href="../style.css" rel="stylesheet" type="text/css">
+	<link rel="shortcut icon" href="../dokodemo.ico" type="image/x-icon">
 </head>
 
 <body class="join">
@@ -100,22 +112,25 @@
 
   <section class="join_content container">
     <div class="flexbox row vh-100">
-      <form class="formArea col-xl-4 col-lg-5 col-md-7 col-sm-10" action="" method="post" enctype="multipart/form-data">
+      <form class="formArea col-xl-5 col-lg-5 col-md-7 col-sm-10" action="" method="post" enctype="multipart/form-data">
         <div class="formArea_text">
           <h2>アカウント作成</h2>
           <input type="text" name="name" value="<?php echo htmlspecialchars($_POST['name'] ?? "", ENT_QUOTES); ?>" placeholder="ユーザー名" autocomplete="off" maxlength="255">
           <?php if (isset($error['name']) && $error['name'] == 'blank'): ?>
-			<p class="error">※ ユーザー名を入力してください</p>
-		　<?php endif; ?>
+						<p class="error">※ ユーザー名を入力してください</p>
+		　			<?php endif; ?>
+					<?php if ($error['name'] == 'duplicate'): ?>
+						<p class="error">※ 入力されたユーザー名は既に登録されています</p>
+					<?php endif; ?>
           <input type="text" name="email" value="<?php echo htmlspecialchars($_POST['email'] ?? "", ENT_QUOTES); ?>" placeholder="メールアドレス" autocomplete="off" maxlength="255">
           <?php if (isset($error['email'])): ?>
             <?php if ($error['email'] == 'blank'): ?>
               <p class="error">※ メールアドレスを入力してください</p>
-		    <?php endif; ?>
-		    <?php if ($error['email'] == 'duplicate'): ?>
-		      <p class="error">※ 指定されたメールアドレスは既に登録されています</p>
-		    <?php endif; ?>
-		  <?php endif; ?>
+		    		<?php endif; ?>
+		    		<?php if ($error['email'] == 'duplicate'): ?>
+		      		<p class="error">※ 入力されたメールアドレスは既に登録されています</p>
+		    		<?php endif; ?>
+		  		<?php endif; ?>
           <input type="password" name="password" value="" placeholder="パスワード" autocomplete="off" maxlength="20">
           <?php if (isset($error['password'])): ?>
             <?php if ($error['password'] == 'blank'): ?>
