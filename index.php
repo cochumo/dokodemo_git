@@ -111,7 +111,7 @@
   // var_dump($posts[0]['user_id']);
   // var_dump($member['id']);
   // exit();
-  // 
+  //
 
 
 ?>
@@ -176,13 +176,13 @@
         <?php foreach ($posts as $post): ?>
         <div class="index_content" id="<?php echo $post['id']; ?>">
           <div class="content_header flexbox">
-            <a href="#" class="flexbox">
+            <div class="flexbox">
               <i class="fas fa-user-circle fa-2x"></i>
               <p>
                 <?php echo (mb_substr(h($post['name']),0,8)); ?>
                 <?php echo ((mb_strlen($post['name']) > 8 ? '...' : '')); ?>
               </p>
-            </a>
+            </div>
             <div class="flexbox">
               <i class="far fa-clock fa-lg"></i>
               <p><?php echo h(relative_time($post['created_at'])); ?></p>
