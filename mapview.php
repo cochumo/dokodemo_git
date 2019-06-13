@@ -205,7 +205,7 @@
             <a class="nav-link js-scroll-trigger" href="mypage.php">マイページ</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#">利用規約</a>
+            <a class="nav-link js-scroll-trigger" href="terms.php">利用規約</a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="logout.php">ログアウト</a>
@@ -265,8 +265,8 @@
     //var js_postAddress = JSON.parse('<?php print_r ($address); ?>');
     var posted_lat = JSON.parse('<?php print_r ($posted_lat); ?>');
     var posted_lng = JSON.parse('<?php print_r ($posted_lng); ?>');
-console.log(posted_lat);
-console.log(posted_lng);
+// console.log(posted_lat);
+// console.log(posted_lng);
 
     var fenway = {
       lat: Number(posted_lat),
@@ -306,15 +306,14 @@ console.log(posted_lng);
 
           if (status === 'OK') {
             // ある場合
-            console.log(result);
-            console.log(status);
+            // console.log(result);
+            // console.log(status);
             // 単体テスト
-            setTimeout(reload, 10000);
+            // setTimeout(reload, 10000);
           } else {
             // ない場合(UNKNOWN_ERROR or ZERO_RESULTS)
-            console.log('else入ったよ');
-            console.log(result);
-            console.log(status);
+            // console.log(result);
+            // console.log(status);
             setTimeout(reload, 0);
           }
       });
