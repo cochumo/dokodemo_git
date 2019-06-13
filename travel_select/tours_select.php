@@ -64,7 +64,7 @@
             <a class="nav-link js-scroll-trigger" href="../mypage.php">マイページ</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#">利用規約</a>
+            <a class="nav-link js-scroll-trigger" href="../terms.php">利用規約</a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="../logout.php">ログアウト</a>

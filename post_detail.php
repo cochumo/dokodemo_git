@@ -115,7 +115,7 @@
             <a class="nav-link js-scroll-trigger" href="mypage.php">マイページ</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#">利用規約</a>
+            <a class="nav-link js-scroll-trigger" href="terms.php">利用規約</a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="logout.php">ログアウト</a>
@@ -181,11 +181,11 @@
     var posted_head = JSON.parse('<?php print_r ($posted_head); ?>');
     var posted_pitch = JSON.parse('<?php print_r ($posted_pitch); ?>');
     var posted_zoom = JSON.parse('<?php print_r ($posted_zoom); ?>');
-console.log(posted_lat);
-console.log(posted_lng);
-console.log(posted_head);
-console.log(posted_pitch);
-console.log(posted_zoom);
+// console.log(posted_lat);
+// console.log(posted_lng);
+// console.log(posted_head);
+// console.log(posted_pitch);
+// console.log(posted_zoom);
 
     function initialize() {
       var fenway = {

@@ -42,80 +42,6 @@
 
   if (!empty($_POST)) {
 
-    // 名前編集処理
-    if (!empty($_POST['name_change'])){
-      $name_change = $db->prepare('UPDATE users SET name=? WHERE id=?');
-      $name_change->execute(array(
-        $_POST['name_change'],
-        $userId
-      ));
-
-      // フラッシュメッセージ success
-      flash('success', '名前の変更が正常に行われました');
-      header('Location: mypage.php');
-      exit;
-    }
-
-    // パスワード変更処理
-    if (!empty($_POST['current_password'] || $_POST['new_password'] || $_POST['confirm_password'])){
-
-      // 変数定義
-      $current_password = $_POST['current_password'];
-      $new_password = $_POST['new_password'];
-      $confirm_password = $_POST['confirm_password'];
-
-      // エラー処理
-
-      // 現在のパスワードを取得
-      $current_pass_check = $db->prepare('SELECT password FROM users WHERE id=?');
-      $current_pass_check->execute(array($userId));
-      $current_pass_return = $current_pass_check->fetch();
-
-      // 3つの欄の中で空がないか検査
-      if ($_POST['current_password'] == "" || $_POST['new_password'] == "" || $_POST['confirm_password'] == "") {
-
-        // フラッシュメッセージ error
-        flash('error', '未記入の欄があります。確認してください');
-        header('Location: mypage.php');
-        exit;
-      }
-
-      // 新しいパスワードと確認用パスワードが一緒か検査
-      if ($new_password == $confirm_password) {
-
-        // 入力された現在のパスワードと照合
-        if ($current_pass_return[0] == sha1($current_password)) {
-          // 照合成功
-          $password_update = $db->prepare('UPDATE users SET password=? WHERE id=?');
-          $password_update->execute(array(
-            sha1($new_password),
-            $userId
-          ));
-
-          // フラッシュメッセージ success
-          flash('success', 'パスワードの変更が正常に行われました');
-          header('Location: mypage.php');
-          exit;
-
-        } else {
-          //照合失敗
-
-          // フラッシュメッセージ error
-          flash('error', '入力された「現在のパスワード」が一致しませんでした');
-          header('Location: mypage.php');
-          exit;
-        }
-      } else {
-        // 新しいパスワードと確認用パスワードが一緒じゃない
-
-        // フラッシュメッセージ error
-        flash('error', '入力された「新しいパスワード」と「確認用パスワード」が一致しませんでした');
-        header('Location: mypage.php');
-        exit;
-      }
-
-    }
-
     // 論理削除した投稿を復元
     if (!empty($_POST['restorePostId'])) {
       // 復元する投稿の投稿者が現在ログインしているユーザーか検査
@@ -135,6 +61,91 @@
         header('Location: mypage.php');
         exit;
       }
+    }
+
+    // ゲストログインでは変更できない処理
+    if (!($member['id'] == 1 && $member['name'] == "Guest")) {
+
+      // 名前編集処理
+      if (!empty($_POST['name_change'])){
+        $name_change = $db->prepare('UPDATE users SET name=? WHERE id=?');
+        $name_change->execute(array(
+          $_POST['name_change'],
+          $userId
+        ));
+
+        // フラッシュメッセージ success
+        flash('success', '名前の変更が正常に行われました');
+        header('Location: mypage.php');
+        exit;
+      }
+
+      // パスワード変更処理
+      if (!empty($_POST['current_password'] || $_POST['new_password'] || $_POST['confirm_password'])) {
+
+        // 変数定義
+        $current_password = $_POST['current_password']; // 現在のパスワード
+        $new_password = $_POST['new_password']; // 新しいパスワード
+        $confirm_password = $_POST['confirm_password']; // 新しいパスワードの確認
+
+        // エラー処理
+
+        // 現在のパスワードを取得
+        $current_pass_check = $db->prepare('SELECT password FROM users WHERE id=?');
+        $current_pass_check->execute(array($userId));
+        $current_pass_return = $current_pass_check->fetch();
+
+        // 3つの欄の中で空がないか検査
+        if ($_POST['current_password'] == "" || $_POST['new_password'] == "" || $_POST['confirm_password'] == "") {
+
+          // フラッシュメッセージ error
+          flash('error', '未記入の欄があります。確認してください');
+          header('Location: mypage.php');
+          exit;
+        }
+
+        // 新しいパスワードと確認用パスワードが一緒か検査
+        if ($new_password == $confirm_password) {
+
+          // 入力された現在のパスワードと照合
+          if ($current_pass_return[0] == sha1($current_password)) {
+            // 照合成功
+            $password_update = $db->prepare('UPDATE users SET password=? WHERE id=?');
+            $password_update->execute(array(
+              sha1($new_password),
+              $userId
+            ));
+
+            // フラッシュメッセージ success
+            flash('success', 'パスワードの変更が正常に行われました');
+            header('Location: mypage.php');
+            exit;
+
+          } else {
+            //照合失敗
+
+            // フラッシュメッセージ error
+            flash('error', '入力された「現在のパスワード」が一致しませんでした');
+            header('Location: mypage.php');
+            exit;
+          }
+        } else {
+          // 新しいパスワードと確認用パスワードが一緒じゃない
+
+          // フラッシュメッセージ error
+          flash('error', '入力された「新しいパスワード」と「確認用パスワード」が一致しませんでした');
+          header('Location: mypage.php');
+          exit;
+        }
+      }
+
+    } else {
+
+      // フラッシュメッセージ error
+      flash('error', 'ゲストログインでは各種変更処理はできません。新しくアカウントを作成して下さい。');
+      header('Location: mypage.php');
+      exit;
+
     }
 
   }
@@ -184,7 +195,7 @@
               <a class="nav-link js-scroll-trigger" href="mypage.php">マイページ</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#">利用規約</a>
+              <a class="nav-link js-scroll-trigger" href="terms.php">利用規約</a>
             </li>
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="logout.php">ログアウト</a>

@@ -156,7 +156,7 @@
             <a class="nav-link js-scroll-trigger" href="mypage.php">マイページ</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#">利用規約</a>
+            <a class="nav-link js-scroll-trigger" href="terms.php">利用規約</a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="logout.php">ログアウト</a>
@@ -192,10 +192,12 @@
             <div id="pano_list_<?php echo $post['id']; ?>" class="pano_list"></div>
           </div>
           <div class="content_footer flexbox">
-            <p class="msg">
-              <?php echo (mb_substr(h($post['message']),0,20)); ?>
-              <?php echo ((mb_strlen($post['message']) > 20 ? '...' : '')); ?>
-            </p>
+            <div class="msg">
+              <p class="">
+                <?php echo (mb_substr(h($post['message']),0,20)); ?>
+                <?php echo ((mb_strlen($post['message']) > 20 ? '...' : '')); ?>
+              </p>
+            </div>
             <div class="flex">
 
               <?php
@@ -417,7 +419,7 @@
   // グローバルな変数作成
   // var _svp = "";
   var js_post = JSON.parse('<?php echo $php_json; ?>');
-  console.log(js_post);
+  // console.log(js_post);
 
   function initialize() {
     // ループ
@@ -426,8 +428,8 @@
       //var fenway = { lat: Number(js_post["latitude"]),lng: Number(js_post["longitude"])};
       var fenway = { lat: Number(js_post[val]["latitude"]),lng: Number(js_post[val]["longitude"])};
       var id = 'pano_list_' + js_post[val]['id'];
-      console.log(id);
-      console.log(fenway);
+      // console.log(id);
+      // console.log(fenway);
 
       var panorama = new google.maps.StreetViewPanorama(
 
